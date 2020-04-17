@@ -8,8 +8,23 @@ http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/htt
 		<set-variable value="#['put-orderline-update-impl-sub-flow']" doc:name="Set Flow Name" doc:id="f880e1ee-d436-4241-8f6b-d5756f20d95d" variableName="flowName"/>
 		<flow-ref doc:name="Log process entry" doc:id="500d585a-19bf-4c32-b111-96ea03a962f1" name="log-process-entry-sub-flow"/>
 		<flow-ref doc:name="Audit process entry" doc:id="3be411df-1af9-41a3-a80c-6c60d2513349" name="audit-process-entry-sub-flow"/>
-		<until-successful maxRetries="0" doc:name="Until Successful" doc:id="343f1e7d-4451-4193-8cd5-3b769f371998" >
-			<http:request method="PUT" doc:name="Invoke orderline process layer" doc:id="41630289-68cb-46bc-8af8-7d27bf3bc245" config-ref="p_order_mgmt_HTTP_Request_configuration" path="${processOrderMgmt.orderlineUpdatePath}"/>
+		<until-successful maxRetries="${retry.attempts}" doc:name="Until Successful" doc:id="343f1e7d-4451-4193-8cd5-3b769f371998" millisBetweenRetries="${retry.frequency}">
+			<http:request method="PUT" doc:name="Invoke orderline process layer" doc:id="41630289-68cb-46bc-8af8-7d27bf3bc245" config-ref="p_order_mgmt_HTTP_Request_configuration" path="${processOrderMgmt.orderlineUpdatePath}">
+				<http:headers ><![CDATA[#[output application/java
+---
+{
+	"Transaction-Id" : vars.transactionId,
+	"client_secret" : p('processOrderMgmt.clientSecret'),
+	"Transaction-Start-Time" : vars.transactionStartTime,
+	"client_id" : p('processOrderMgmt.clientId')
+}]]]></http:headers>
+				<http:uri-params ><![CDATA[#[output application/java
+---
+{
+	"erpOrderId" : vars.erpOrderId,
+	"erpOrderLineId" : vars.erpOrderLineId
+}]]]></http:uri-params>
+			</http:request>
 			<logger level="INFO" doc:name="Logger" doc:id="2dee4a92-87e5-460c-88b0-2b829066505f" message="Success"/>
 		</until-successful>
 		<flow-ref doc:name="Audit process exit" doc:id="b2f77e14-1264-4506-95d6-8184f0a06df5" name="audit-process-exit-sub-flow"/>

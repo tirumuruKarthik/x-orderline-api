@@ -33,4 +33,6 @@ processOrderMgmt:
   host: "localhost"
   port: "8091"
   basePath: "/api/v1"
-  orderlineUpdatePath: "/"
+  clientId: "1234"
+  clientSecret: "4321"
+  orderlineUpdatePath: "/erpOrderLines"

@@ -8,6 +8,9 @@
 		http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
 		http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd">
 	<munit:config name="orderline-update-test-suite.xml" />
+	<import doc:name="Import" doc:id="2dce30df-0307-4e66-a1b6-d4653b6974a4" file="globals.xml" />
+	<import doc:name="Import" doc:id="3cad0d56-2a2f-48ca-b978-6ee358d570f1" file="orderline-update-impl.xml" />
+	<import doc:name="Import" doc:id="8956d59c-e764-4847-9b12-5cac677ea31c" file="x-orderline-api.xml" />
 	<munit:test name="orderline-update-test-suite-put:\erpOrderLines\(erpOrderId)\(erpOrderLineId):application\json:x-orderline-api-configTest" doc:id="f1d81e14-e81a-4e5f-9f1e-12384b9dde7d" description="Test">
 		<munit:behavior >
 			<munit-tools:mock-when doc:name="Mock when" doc:id="9d2c036c-1a4f-4894-b26c-2afef57f599b" processor="http:request">
@@ -17,6 +20,7 @@
 			</munit-tools:mock-when>
 		</munit:behavior>
 		<munit:execution >
+			<set-payload value='#[MunitTools::getResourceAsString("request/orderline-update-success-request.json")]' doc:name="Set Payload" doc:id="bea87da4-4937-414a-9b28-e4b6db2856cf" />
 			<flow-ref doc:name="Flow-ref to put:\erpOrderLines\(erpOrderId)\(erpOrderLineId):application\json:x-orderline-api-config" doc:id="b51ed446-7d69-4971-97b4-06fca7da3929" name="put:\erpOrderLines\(erpOrderId)\(erpOrderLineId):application\json:x-orderline-api-config"/>
 		</munit:execution>
 		<munit:validation >
