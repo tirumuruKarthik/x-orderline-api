@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:munit="http://www.mulesoft.org/schema/mule/munit" xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xsi:schemaLocation="
+		http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+		http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+		http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd">
+	<munit:config name="orderline-update-test-suite.xml" />
+	<munit:test name="orderline-update-test-suite-put:\erpOrderLines\(erpOrderId)\(erpOrderLineId):application\json:x-orderline-api-configTest" doc:id="f1d81e14-e81a-4e5f-9f1e-12384b9dde7d" description="Test">
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock when" doc:id="9d2c036c-1a4f-4894-b26c-2afef57f599b" processor="http:request">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="Invoke orderline process layer" attributeName="doc:name" />
+				</munit-tools:with-attributes>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to put:\erpOrderLines\(erpOrderId)\(erpOrderLineId):application\json:x-orderline-api-config" doc:id="b51ed446-7d69-4971-97b4-06fca7da3929" name="put:\erpOrderLines\(erpOrderId)\(erpOrderLineId):application\json:x-orderline-api-config"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-that doc:name="Assert that" doc:id="ca87853e-e16b-4689-8681-d2bd2f881792" expression="#[payload.responseText]" is="#['success']"/>
+		</munit:validation>
+	</munit:test>
+
+
+</mule>

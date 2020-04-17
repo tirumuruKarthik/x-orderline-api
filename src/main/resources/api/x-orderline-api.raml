@@ -1,0 +1,61 @@
+#%RAML 1.0
+baseUri: https://anypoint.mulesoft.com/mocking/api/v1/links/69bc986f-cb96-4b61-810c-8c586eb61405/ # 
+title: x-orderlines-api
+version: v1
+
+uses:
+  dataTypesLib: exchange_modules/600fe2e7-d5ea-4266-abb3-7fb67efb9c53/datatypeslibrary/1.0.0/datatypeslibrary.raml
+  resourceTypesLib: exchange_modules/600fe2e7-d5ea-4266-abb3-7fb67efb9c53/resourcetypeslibrary/1.0.0/resourcetypeslibrary.raml
+  traitsLib: exchange_modules/600fe2e7-d5ea-4266-abb3-7fb67efb9c53/traitslibrary/1.0.0/traitslibrary.raml
+  
+/erpOrderLines/{erpOrderId}/{erpOrderLineId}:  
+  description: |
+        Resource to update order line fulfilment status coming from Orcle-ERP System based on order id and order line id.
+  type:
+    resourceTypesLib.member:
+  is: [traitsLib.traceable: {required: true}, traitsLib.secured: {required: true}]
+  put:
+    description: |
+      Post order line updates to CALM2 system
+    headers:
+      ERP-Account-Number:
+        type: string
+        description: ERP account number              
+    body:
+      application/json:
+        example: !include examples/update-order-lines.raml
+        properties:
+          order-line: dataTypesLib.order-line
+          customer: dataTypesLib.customer
+          license-factory: dataTypesLib.license-factory
+    responses:
+      200:
+        body:
+          application/json:
+            example: |
+                  { "responseCode" : 0,  "responseText" : "success"}
+/erpLicenseFulfillmentStatus/{erpOrderId}/{erpOrderLineId}:
+  description: |
+        Resource to update license fulfillment status coming from Orcle-ERP System based on order id an order line id.
+  type:
+    resourceTypesLib.member:
+  is: [traitsLib.traceable: {required: true}, traitsLib.secured: {required: true}]
+  put:
+    description: |
+      Post licene fulfillment updates to Oracle system
+    headers:
+      ERP-Account-Number:
+        type: string
+        description: ERP account number
+    body:
+      application/json:
+        example: !include examples/license-fulfillment-status.raml
+        properties:
+          status-id: dataTypesLib.status-id
+          status-info: dataTypesLib.status-info
+    responses:
+      200:
+        body:
+          application/json:
+            example: |
+                  { "responseCode" : 0,  "responseText" : "success"}                  

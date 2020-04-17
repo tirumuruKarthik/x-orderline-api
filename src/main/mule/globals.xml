@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:db="http://www.mulesoft.org/schema/mule/db"
+	xmlns:secure-properties="http://www.mulesoft.org/schema/mule/secure-properties"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:cloudhub="http://www.mulesoft.org/schema/mule/cloudhub" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd 
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/secure-properties http://www.mulesoft.org/schema/mule/secure-properties/current/mule-secure-properties.xsd http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd
+http://www.mulesoft.org/schema/mule/cloudhub http://www.mulesoft.org/schema/mule/cloudhub/current/mule-cloudhub.xsd">
+	<http:listener-config name="x-orderline-api-httpListenerConfig">
+        <http:listener-connection host="${http.host}" port="${http.private.port}" />
+    </http:listener-config>
+	<import doc:name="Import" doc:id="f24e74a8-8c25-409f-8ad6-7d8b07f03495" file="common-auditing-framework.xml"/>
+	<import doc:name="Import" doc:id="e9509504-7ad3-43e7-91ae-aef728e072fb" file="common-logging-framework.xml" />
+	<import doc:name="Import" doc:id="dc992063-b2e5-4d59-94bc-1223674cea99" file="common-error-handling.xml" />
+	<configuration-properties doc:name="Configuration properties" doc:id="d172b97a-26f5-4fdd-ab81-1b15cf12adbb" file="properties/${mule.env}-properties.yaml" />
+	<configuration-properties doc:name="Configuration properties" doc:id="652f900d-32f7-4554-807c-ef5ca4e252f9" file="properties/common-properties.yaml" />
+	<configuration doc:name="Configuration" doc:id="c26680ba-9705-48e9-a137-b3453d702f12" defaultErrorHandler-ref="GlobalExceptionStrategy" />
+	<db:config name="Database_Config" doc:name="Database Config" doc:id="6aa283da-b4cd-460c-aff4-f2cc391deb6d" >
+		<db:my-sql-connection host="${db.audit.config.host}" port="${db.audit.config.port}" user="${secure::db.audit.config.user}" password="${secure::db.audit.config.password}" database="${db.audit.config.database}" />
+	</db:config>
+	<cloudhub:config name="CloudHub_Config" doc:name="CloudHub Config" doc:id="ed461fff-44d1-419a-a563-a76b8eff21ac" >
+			<cloudhub:connection username="${secure::cloudhub.username}" password="${secure::cloudhub.password}" environment="${environment.id}"/>
+	</cloudhub:config>
+	<secure-properties:config name="Secure_Properties_Config" doc:name="Secure Properties Config" doc:id="8c9ad73c-8d33-412a-8cc4-94264f871ad8" file="properties/${mule.env}-properties.yaml" key="${encryption.key}">
+	</secure-properties:config>
+	<http:request-config name="p_order_mgmt_HTTP_Request_configuration" doc:name="HTTP Request configuration" doc:id="25dea7c1-3444-427d-82f4-ff1f7164700f" basePath="${processOrderMgmt.basePath}">
+		<http:request-connection host="${processOrderMgmt.host}" port="${processOrderMgmt.port}"/>
+	</http:request-config>
+
+</mule>

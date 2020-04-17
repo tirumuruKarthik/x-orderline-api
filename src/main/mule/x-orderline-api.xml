@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mule xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd ">
+    <apikit:config name="x-orderline-api-config" api="x-orderline-api.raml" outboundHeadersMapName="outboundHeaders" httpStatusVarName="httpStatus" />
+    <flow name="x-orderline-api-main">
+        <http:listener config-ref="x-orderline-api-httpListenerConfig" path="${http.basePath}">
+            <http:response statusCode="#[vars.httpStatus default 200]">
+                <http:headers><![CDATA[#[vars.outboundHeaders default {}]]]></http:headers>
+            </http:response>
+            <http:error-response statusCode="#[vars.httpStatus default 500]">
+                <http:body><![CDATA[#[payload]]]></http:body>
+                <http:headers><![CDATA[#[vars.outboundHeaders default {}]]]></http:headers>
+            </http:error-response>
+        </http:listener>
+        <apikit:router config-ref="x-orderline-api-config" />
+    </flow>
+    <flow name="x-orderline-api-console">
+        <http:listener config-ref="x-orderline-api-httpListenerConfig" path="/console/*">
+            <http:response statusCode="#[vars.httpStatus default 200]">
+                <http:headers>#[vars.outboundHeaders default {}]</http:headers>
+            </http:response>
+            <http:error-response statusCode="#[vars.httpStatus default 500]">
+                <http:body>#[payload]</http:body>
+                <http:headers>#[vars.outboundHeaders default {}]</http:headers>
+            </http:error-response>
+        </http:listener>
+        <apikit:console config-ref="x-orderline-api-config" />
+    </flow>
+    <flow name="put:\erpLicenseFulfillmentStatus\(erpOrderId)\(erpOrderLineId):application\json:x-orderline-api-config">
+       
+        <ee:transform xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+            <ee:message>
+                <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{
+  responseCode: 0,
+  responseText: "success"
+}]]></ee:set-payload>
+            </ee:message>
+        </ee:transform>
+    </flow>
+    <flow name="put:\erpOrderLines\(erpOrderId)\(erpOrderLineId):application\json:x-orderline-api-config">
+		<set-variable value="#['put:\erpOrderLines\(erpOrderId)\(erpOrderLineId):application\json:x-orderline-api-config']" doc:name="Set flow name" doc:id="904e9b7b-a876-4047-ad4a-b8d7d3f00120" variableName="flowName"/>
+		<flow-ref doc:name="Log receiver entry" doc:id="4c480796-df4f-48ee-bb2b-7c05582fd243" name="log-receiver-entry-sub-flow"/>
+		<flow-ref doc:name="Audit receiver entry" doc:id="8977f475-21fb-4e41-abad-27c768d92924" name="audit-receiver-entry-sub-flow"/>
+		<ee:transform xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" doc:id="0b58de6f-724c-4ffe-bcd4-f021b0e543be">
+            <ee:variables>
+                <ee:set-variable variableName="erpOrderId"><![CDATA[attributes.uriParams.'erpOrderId']]></ee:set-variable>
+                <ee:set-variable variableName="erpOrderLineId"><![CDATA[attributes.uriParams.'erpOrderLineId']]></ee:set-variable>
+            </ee:variables>
+        </ee:transform>
+        <flow-ref doc:name="Orderline Update flow" doc:id="90d35adb-bbed-4bc9-801a-aa2b64a9599a" name="put-orderline-update-impl-sub-flow"/>
+		<ee:transform xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd" doc:id="7be6528c-3c0c-4125-bc89-8322221f7926">
+            <ee:message>
+                <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{
+  responseCode: 0,
+  responseText: "success"
+}]]></ee:set-payload>
+            </ee:message>
+        </ee:transform>
+		<flow-ref doc:name="Audit dispatcher exit" doc:id="87c1e095-7271-43c4-b013-543f1a889365" name="audit-dispatcher-exit-sub-flow"/>
+		<flow-ref doc:name="Log dispatcher exit" doc:id="54de65b5-f882-4026-b9a1-dd72fea7cf4f" name="log-dispatcher-exit-sub-flow"/>
+    </flow>
+</mule>

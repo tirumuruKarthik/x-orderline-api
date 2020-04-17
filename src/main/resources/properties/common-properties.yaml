@@ -1,0 +1,17 @@
+is: 
+  audit:
+    toggle: "OFF"
+    payload: "OFF"
+    details:
+      toggle: "OFF"
+  logging:
+    toggle: "OFF"
+
+domain: "s-oracle-erp-api"
+
+environment:
+  id: "Development"
+  
+retry:
+  frequency: "2000"
+  attempts: "3"
