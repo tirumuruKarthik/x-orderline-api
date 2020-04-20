@@ -9,7 +9,7 @@ http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/htt
 http://www.mulesoft.org/schema/mule/secure-properties http://www.mulesoft.org/schema/mule/secure-properties/current/mule-secure-properties.xsd http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd
 http://www.mulesoft.org/schema/mule/cloudhub http://www.mulesoft.org/schema/mule/cloudhub/current/mule-cloudhub.xsd">
 	<http:listener-config name="x-orderline-api-httpListenerConfig">
-        <http:listener-connection host="${http.host}" port="${http.private.port}" />
+        <http:listener-connection host="${http.host}" port="${http.port}" />
     </http:listener-config>
 	<import doc:name="Import" doc:id="f24e74a8-8c25-409f-8ad6-7d8b07f03495" file="common-auditing-framework.xml"/>
 	<import doc:name="Import" doc:id="e9509504-7ad3-43e7-91ae-aef728e072fb" file="common-logging-framework.xml" />

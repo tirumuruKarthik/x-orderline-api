@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mule xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
-	xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd ">
+	xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd 
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
     <apikit:config name="x-orderline-api-config" api="x-orderline-api.raml" outboundHeadersMapName="outboundHeaders" httpStatusVarName="httpStatus" />
     <flow name="x-orderline-api-main">
         <http:listener config-ref="x-orderline-api-httpListenerConfig" path="${http.basePath}">
@@ -17,11 +18,11 @@
     <flow name="x-orderline-api-console">
         <http:listener config-ref="x-orderline-api-httpListenerConfig" path="/console/*">
             <http:response statusCode="#[vars.httpStatus default 200]">
-                <http:headers>#[vars.outboundHeaders default {}]</http:headers>
+                <http:headers><![CDATA[#[vars.outboundHeaders default {}]]]></http:headers>
             </http:response>
             <http:error-response statusCode="#[vars.httpStatus default 500]">
-                <http:body>#[payload]</http:body>
-                <http:headers>#[vars.outboundHeaders default {}]</http:headers>
+                <http:body><![CDATA[#[payload]]]></http:body>
+                <http:headers><![CDATA[#[vars.outboundHeaders default {}]]]></http:headers>
             </http:error-response>
         </http:listener>
         <apikit:console config-ref="x-orderline-api-config" />
@@ -44,10 +45,11 @@ output application/json
 		<set-variable value="#['put:\erpOrderLines\(erpOrderId)\(erpOrderLineId):application\json:x-orderline-api-config']" doc:name="Set flow name" doc:id="904e9b7b-a876-4047-ad4a-b8d7d3f00120" variableName="flowName"/>
 		<flow-ref doc:name="Log receiver entry" doc:id="4c480796-df4f-48ee-bb2b-7c05582fd243" name="log-receiver-entry-sub-flow"/>
 		<flow-ref doc:name="Audit receiver entry" doc:id="8977f475-21fb-4e41-abad-27c768d92924" name="audit-receiver-entry-sub-flow"/>
-		<ee:transform xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" doc:id="0b58de6f-724c-4ffe-bcd4-f021b0e543be">
+		<ee:transform xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" doc:id="0b58de6f-724c-4ffe-bcd4-f021b0e543be" doc:name="Set attributes">
             <ee:variables>
                 <ee:set-variable variableName="erpOrderId"><![CDATA[attributes.uriParams.'erpOrderId']]></ee:set-variable>
                 <ee:set-variable variableName="erpOrderLineId"><![CDATA[attributes.uriParams.'erpOrderLineId']]></ee:set-variable>
+				<ee:set-variable variableName="accountNumber" ><![CDATA[attributes.'ERP-Account-Number']]></ee:set-variable>
             </ee:variables>
         </ee:transform>
         <flow-ref doc:name="Orderline Update flow" doc:id="90d35adb-bbed-4bc9-801a-aa2b64a9599a" name="put-orderline-update-impl-sub-flow"/>
