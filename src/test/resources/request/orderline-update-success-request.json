@@ -1,0 +1,57 @@
+{
+  "order-line": [
+    {
+      "order-line-id": "2875",
+      "order": {
+        "order-id": "12",
+        "ordered-date": "2019-10-03",
+        "order-status": "Active",
+        "sales-contact": "abc@xyz.com"
+      },
+      "product": {
+        "item-name": "12",
+        "versioning": "1.0",
+        "legacy-product-code": "we-34-dd",
+        "commercial-name": "xyz",
+        "item-class": "class1",
+        "status": "Active",
+        "comments": "Product Details"
+      },
+      "charging-type": "GBP",
+      "shipping-address": "en-gb",
+      "charging-plan": {
+        "contract-start-date": "2019-10-03",
+        "contract-end-date": "2020-10-02",
+        "unit-of-sale": "C",
+        "units-of-sale-amount": 0,
+        "fee-type": "A",
+        "product-version-list": "",
+        "usage-reporting-system": false
+      }
+    }
+  ],
+  "customer": [
+    {
+      "legacy-customer-code": "we-12-wd-34",
+      "account-number": "1234567891",
+      "contact": {
+        "name": "John",
+        "email": "abc@xyz.com",
+        "role": "customer"
+      },
+      "organisation-name": "Org1",
+      "customer-address": {
+        "id": "",
+        "address": "xyz street",
+        "address-line-2": "add2",
+        "address-line-3": "add3",
+        "address-line-4": "",
+        "city": "London",
+        "state": "London",
+        "postal-code": "LU1",
+        "country": "UK"
+      }
+    }
+  ],
+  "license-factory": "abc"
+}
