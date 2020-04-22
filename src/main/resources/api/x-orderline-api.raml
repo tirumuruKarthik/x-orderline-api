@@ -1,5 +1,5 @@
 #%RAML 1.0
-baseUri: https://anypoint.mulesoft.com/mocking/api/v1/links/69bc986f-cb96-4b61-810c-8c586eb61405/ # 
+baseUri: https://anypoint.mulesoft.com/mocking/api/v1/links/65a1549f-ef35-4c92-a70d-8ba0be6f4d02/ # 
 title: x-orderlines-api
 version: v1
 
@@ -8,33 +8,40 @@ uses:
   resourceTypesLib: exchange_modules/600fe2e7-d5ea-4266-abb3-7fb67efb9c53/resourcetypeslibrary/1.0.0/resourcetypeslibrary.raml
   traitsLib: exchange_modules/600fe2e7-d5ea-4266-abb3-7fb67efb9c53/traitslibrary/1.0.0/traitslibrary.raml
   
-/erpOrderLines/{erpOrderId}/{erpOrderLineId}:  
+/erpOrderLines:
   description: |
         Resource to update order line fulfilment status coming from Orcle-ERP System based on order id and order line id.
+  /{erpOrderId}:
+    description: |
+        ERP Order identifier 
+    /{erpOrderLineId}:  
+      description: |
+        ERP Order line identifier; with erpOrderId and X-ErpAccountNumber, uniquely identifies an ERP Order line
   type:
     resourceTypesLib.member:
   is: [traitsLib.traceable: {required: true}, traitsLib.secured: {required: true}]
   put:
     description: |
-      Post order line updates to CALM2 system
+      Upsert orderline to target system. e.g CALM2
     headers:
       ERP-Account-Number:
         type: string
-        description: ERP account number              
+        description: |
+          Legacy Navision or other system customer code, aka Navision account number or Reference for existing customer or new ERP customer code. Specifies the customer for ALAs. Must match the Connect Account for CLAs             
     body:
       application/json:
         example: !include examples/update-order-lines.raml
         properties:
-          order-line: dataTypesLib.order-line
+          orderLine: dataTypesLib.orderLine
           customer: dataTypesLib.customer
-          license-factory: dataTypesLib.license-factory
+          licenseFactory: dataTypesLib.licenseFactory
     responses:
       200:
         body:
           application/json:
             example: |
                   { "responseCode" : 0,  "responseText" : "success"}
-/erpLicenseFulfillmentStatus/{erpOrderId}/{erpOrderLineId}:
+/erpLicenseFulfillmentStatus/{erpOrderId}:/{erpOrderLineId}:
   description: |
         Resource to update license fulfillment status coming from Orcle-ERP System based on order id an order line id.
   type:
@@ -51,8 +58,8 @@ uses:
       application/json:
         example: !include examples/license-fulfillment-status.raml
         properties:
-          status-id: dataTypesLib.status-id
-          status-info: dataTypesLib.status-info
+          statusId: dataTypesLib.statusId
+          statusInfo: dataTypesLib.statusInfo
     responses:
       200:
         body:
