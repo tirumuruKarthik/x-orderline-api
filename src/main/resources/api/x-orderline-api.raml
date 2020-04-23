@@ -8,55 +8,68 @@ uses:
   resourceTypesLib: exchange_modules/600fe2e7-d5ea-4266-abb3-7fb67efb9c53/resourcetypeslibrary/1.0.0/resourcetypeslibrary.raml
   traitsLib: exchange_modules/600fe2e7-d5ea-4266-abb3-7fb67efb9c53/traitslibrary/1.0.0/traitslibrary.raml
   
-/erpOrderLines/{erpOrderId}/{erpOrderLineId}:
+/erpOrderLines:
   description: |
         Resource to update order line fulfilment status coming from Orcle-ERP System based on order id and order line id.
-  type:
-    resourceTypesLib.member:
-  is: [traitsLib.traceable: {required: true}, traitsLib.secured: {required: true}]
-  put:
+  /{erpOrderId}:
     description: |
-      Upsert orderline to target system. e.g CALM2
-    headers:
-      ERP-Account-Number:
-        type: string
+        ERP Order identifier 
+    /{erpOrderLineId}:  
+      description: |
+        ERP Order line identifier; with erpOrderId and X-ErpAccountNumber, uniquely identifies an ERP Order line
+      type:
+        resourceTypesLib.member:
+      is: [traitsLib.traceable: {required: true}, traitsLib.secured: {required: true}]
+      put:
         description: |
-          Legacy Navision or other system customer code, aka Navision account number or Reference for existing customer or new ERP customer code. Specifies the customer for ALAs. Must match the Connect Account for CLAs             
-    body:
-      application/json:
-        example: !include examples/update-order-lines.raml
-        properties:
-          orderLine: dataTypesLib.orderLine
-          customer: dataTypesLib.customer
-          licenseFactory: dataTypesLib.licenseFactory
-    responses:
-      200:
+          Upsert orderline to target system. e.g CALM2
+        headers:
+          ERP-Account-Number:
+            type: string
+            description: |
+              Legacy Navision or other system customer code, aka Navision account number or Reference for existing customer or new ERP customer code. Specifies the customer for ALAs. Must match the Connect Account for CLAs             
         body:
           application/json:
-            example: |
-                  { "responseCode" : 0,  "responseText" : "success"}
-/erpLicenseFulfillmentStatus/{erpOrderId}:/{erpOrderLineId}:
+            example: !include examples/update-order-lines.raml
+            properties:
+              orderLine: dataTypesLib.orderLine
+              customer: dataTypesLib.customer
+              licenseFactory: dataTypesLib.licenseFactory
+        responses:
+          200:
+            body:
+              application/json:
+                example: |
+                      { "responseCode" : 0,  "responseText" : "success"}
+/erpLicenseFulfillmentStatus:
   description: |
-        Resource to update license fulfillment status coming from Orcle-ERP System based on order id an order line id.
-  type:
-    resourceTypesLib.member:
-  is: [traitsLib.traceable: {required: true}, traitsLib.secured: {required: true}]
-  put:
+        Resource to update license fulfillment status in ERP system where the request coming from source system like CALM2.
+  /{erpOrderId}:
     description: |
-      Post licene fulfillment updates to Oracle system
-    headers:
-      ERP-Account-Number:
-        type: string
-        description: ERP account number
-    body:
-      application/json:
-        example: !include examples/license-fulfillment-status.raml
-        properties:
-          statusId: dataTypesLib.statusId
-          statusInfo: dataTypesLib.statusInfo
-    responses:
-      200:
+        ERP Order identifier 
+    /{erpOrderLineId}:  
+      description: |
+        ERP Order line identifier; with erpOrderId and X-ErpAccountNumber, uniquely identifies an ERP Order line
+      type:
+        resourceTypesLib.member:
+      is: [traitsLib.traceable: {required: true}, traitsLib.secured: {required: true}]
+      put:
+        description: |
+          Update license fulfilment status to ERP system
+        headers:
+          ERP-Account-Number:
+            type: string
+            description: |
+              Legacy Navision or other system customer code, aka Navision account number or Reference for existing customer or new ERP customer code. Specifies the customer for ALAs. Must match the Connect Account for CLAs             
         body:
           application/json:
-            example: |
-                  { "responseCode" : 0,  "responseText" : "success"}                  
+            example: !include examples/license-fulfillment-status.raml
+            properties:
+              statusId: dataTypesLib.statusId
+              statusInfo: dataTypesLib.statusInfo
+        responses:
+          200:
+            body:
+              application/json:
+                example: |
+                      { "responseCode" : 0,  "responseText" : "success"}                      
