@@ -15,3 +15,6 @@ environment:
 retry:
   frequency: "2000"
   attempts: "3"
+  
+response:
+  timeout: "180000"

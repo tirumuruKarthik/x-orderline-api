@@ -34,6 +34,11 @@
                 <ee:set-variable variableName="erpOrderId"><![CDATA[attributes.uriParams.'erpOrderId']]></ee:set-variable>
                 <ee:set-variable variableName="erpOrderLineId"><![CDATA[attributes.uriParams.'erpOrderLineId']]></ee:set-variable>
                 <ee:set-variable variableName="accountNumber"><![CDATA[attributes.headers.'erp-account-number']]></ee:set-variable>
+				<ee:set-variable variableName="processPath" ><![CDATA[%dw 2.0
+output application/java
+---
+p('processOrderMgmt.orderlineUpdatePath') ++ '/' ++ attributes.uriParams.'erpOrderId' ++ '/' ++ attributes.uriParams.'erpOrderLineId'
+]]></ee:set-variable>
             </ee:variables>
         </ee:transform>
         <flow-ref doc:name="Update orderline flow" doc:id="ca6e7eb7-65f9-4dcf-a903-086ce2b66b6a" name="put-orderline-update-impl-sub-flow" />

@@ -8,7 +8,7 @@ http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/htt
 		<set-variable value="#['put-orderline-update-impl-sub-flow']" doc:name="Set Flow Name" doc:id="f880e1ee-d436-4241-8f6b-d5756f20d95d" variableName="flowName"/>
 		<flow-ref doc:name="Log process entry" doc:id="500d585a-19bf-4c32-b111-96ea03a962f1" name="log-process-entry-sub-flow"/>
 		<flow-ref doc:name="Audit process entry" doc:id="3be411df-1af9-41a3-a80c-6c60d2513349" name="audit-process-entry-sub-flow"/>
-		<http:request method="PUT" doc:name="Invoke orderline process layer" doc:id="41630289-68cb-46bc-8af8-7d27bf3bc245" config-ref="p_order_mgmt_HTTP_Request_configuration" path="${processOrderMgmt.orderlineUpdatePath}">
+		<http:request method="PUT" doc:name="Invoke orderline process layer" doc:id="41630289-68cb-46bc-8af8-7d27bf3bc245" config-ref="p_order_mgmt_HTTP_Request_configuration" path="#[vars.processPath]">
 			<http:headers ><![CDATA[#[output application/java
 ---
 {
