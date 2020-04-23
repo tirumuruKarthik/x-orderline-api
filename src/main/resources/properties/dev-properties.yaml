@@ -3,6 +3,10 @@ http:
   port: "80"
   basePath: "/api/v1/*"
   
+api:
+  discovery:
+    id: ""
+  
 db:
   audit:
    config:

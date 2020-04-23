@@ -2,7 +2,11 @@ http:
   host: "0.0.0.0"
   port: "80"
   basePath: "/api/v1/*"
-  
+
+api:
+  discovery:
+    id: ""
+      
 db:
   audit:
    config:
