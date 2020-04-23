@@ -17,15 +17,15 @@ db:
     database: "sys"
   
 cloudhub:
-  username: "![B6oQRyaYk8CZt23whX4G4w==]"
-  password: "![NHwpguDpu3orWYyyXHS8Uw==]"
+  username: ""
+  password: ""
   
 smtp:
-  host: "mail.fatface.net"
-  port: "465"
-  user: "![XImJcfQv4D6cYan0i6XwPZi8Uxv0OkDQvTITnsw/onM=]"
-  password: "![r9f7FSUCH+2adxR8OeswFg==]"
-  subject: "Fatface API Exception"
+  host: ""
+  port: ""
+  user: ""
+  password: ""
+  subject: "Aveva API Exception"
   
 sqs:
   accessKey: "![iKDP0/LYfR1ghGUCOAayKYI5kMT/ieTr3IMibNfn9y8=]"
