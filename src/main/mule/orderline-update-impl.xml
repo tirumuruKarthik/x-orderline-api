@@ -14,6 +14,7 @@ http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/htt
 {
 	"Transaction-Id" : vars.transactionId,
 	"client_secret" : p('processOrderMgmt.clientSecret'),
+	"Authorization" : attributes.headers.Authorization,
 	"Transaction-Start-Time" : vars.transactionStartTime,
 	"client_id" : p('processOrderMgmt.clientId'),
 	"ERP-Account-Number" : vars.accountNumber
