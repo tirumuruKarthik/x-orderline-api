@@ -17,7 +17,7 @@ http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/htt
 					<munit-tools:with-attribute whereValue="Invoke orderline process layer" attributeName="doc:name" />
 				</munit-tools:with-attributes>
 				<munit-tools:then-return >
-					<munit-tools:payload value='#[MunitTools::getResourceAsString("response/orderline-update-success-response.json")]' />
+					<munit-tools:payload value='#[MunitTools::getResourceAsString("response/orderline-update-success-response.json")]' mediaType="application/json" />
 				</munit-tools:then-return>
 			</munit-tools:mock-when>
 		</munit:behavior>
@@ -30,4 +30,26 @@ http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/htt
 		</munit:validation>
 	</munit:test>
 	
+	<munit:test name="orderline-update-impl-test-suite-put-orderline-update-impl-500-sub-flowTest" description="Test" doc:id="2b638a4a-b9a1-4762-9368-48ad9801b935" expectedErrorType="ANY">
+		<munit:behavior>
+			<munit-tools:mock-when doc:name="Mock when" doc:id="21aa6afd-ba16-4248-b73b-ca3fbe519bb1" processor="http:request">
+				<munit-tools:with-attributes>
+					<munit-tools:with-attribute whereValue="Invoke orderline process layer" attributeName="doc:name" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:error typeId="CONNECTIVITY" />
+				</munit-tools:then-return>
+			
+</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution>
+			<set-payload value='#[MunitTools::getResourceAsString("request/orderline-update-success-request.json")]' doc:name="Set Payload" doc:id="ea5e832e-ec56-4e4b-9750-b5bae08e6ba6" />
+			<flow-ref doc:name="Flow Reference" doc:id="385d0893-05b6-4c2a-8f5a-e35a4e8db0ac" name="put:\erpOrderLines\(erpOrderId)\(erpOrderLineId):application\json:x-orderline-api-config"/>
+		
+
+</munit:execution>
+		<munit:validation>
+			<munit-tools:assert-that expression="#[attributes.statusCode]" is="#[MunitTools::equalTo(500)]" message="The HTTP Status code is not correct!" doc:name="Assert That Status Code is 500" />
+		</munit:validation>
+	</munit:test>
 </mule>
