@@ -18,8 +18,10 @@ http://www.mulesoft.org/schema/mule/api-gateway http://www.mulesoft.org/schema/m
 	<configuration-properties doc:name="Configuration properties" doc:id="d172b97a-26f5-4fdd-ab81-1b15cf12adbb" file="properties/${mule.env}-properties.yaml" />
 	<configuration-properties doc:name="Configuration properties" doc:id="652f900d-32f7-4554-807c-ef5ca4e252f9" file="properties/common-properties.yaml" />
 	<configuration doc:name="Configuration" doc:id="c26680ba-9705-48e9-a137-b3453d702f12" defaultErrorHandler-ref="GlobalExceptionStrategy" />
-	<db:config name="Database_Config" doc:name="Database Config" doc:id="6aa283da-b4cd-460c-aff4-f2cc391deb6d" >
-		<db:my-sql-connection host="${db.audit.config.host}" port="${db.audit.config.port}" user="${secure::db.audit.config.user}" password="${secure::db.audit.config.password}" database="${db.audit.config.database}" />
+	<db:config name="Database_Config" doc:name="Database Config" doc:id="59eeb37a-5732-4988-b385-097727dc2c25" >
+		<db:mssql-connection host="${db.audit.config.host}" user="${secure::db.audit.config.user}" password="${secure::db.audit.config.password}" databaseName="${db.audit.config.database}" port="${db.audit.config.port}">
+			<db:pooling-profile maxPoolSize="${db.pool.size.max}" minPoolSize="${db.pool.size.min}" />
+		</db:mssql-connection>
 	</db:config>
 	<cloudhub:config name="CloudHub_Config" doc:name="CloudHub Config" doc:id="ed461fff-44d1-419a-a563-a76b8eff21ac" >
 			<cloudhub:connection username="${secure::cloudhub.username}" password="${secure::cloudhub.password}" environment="${environment.id}"/>
@@ -30,5 +32,5 @@ http://www.mulesoft.org/schema/mule/api-gateway http://www.mulesoft.org/schema/m
 		<http:request-connection host="${processOrderMgmt.host}" port="${processOrderMgmt.port}"/>
 	</http:request-config>
 	<api-gateway:autodiscovery apiId="${api.discovery.id}" doc:name="API Autodiscovery" doc:id="eba9675f-027b-4c95-bbf3-5e7aa5c86542" flowRef="x-orderline-api-main" />
-
+	
 </mule>

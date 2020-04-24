@@ -26,7 +26,8 @@
         <apikit:console config-ref="x-orderline-api-config" />
     </flow>
     <flow name="put:\erpOrderLines\(erpOrderId)\(erpOrderLineId):application\json:x-orderline-api-config">
-        <set-variable value="#['put:\erpOrderLines\(erpOrderId)\(erpOrderLineId):application\json:x-orderline-api-config']" doc:name="Set flow name" doc:id="84e4eb7a-e68f-4694-ba19-b4259aa637cf" variableName="flowName" />
+        <set-variable value="#['x-orderline-api']" doc:name="Set Api Name" doc:id="6ddc1419-8784-4bdf-ab02-09e2332ff1e0" variableName="apiName"/>
+		<set-variable value="#[vars.apiName ++ &quot;:&quot; ++'put:\erpOrderLines\(erpOrderId)\(erpOrderLineId):application\json:x-orderline-api-config']" doc:name="Set flow name" doc:id="84e4eb7a-e68f-4694-ba19-b4259aa637cf" variableName="flowName" />
         <flow-ref doc:name="Log receiver entry" doc:id="9e6bdee2-b4e3-4621-8d2c-6b2efcbaa88f" name="log-receiver-entry-sub-flow" />
         <flow-ref doc:name="Audit receiver entry" doc:id="9fba39f8-98c9-4339-b06d-cf2cdf222c69" name="audit-receiver-entry-sub-flow" />
         <ee:transform doc:id="aa4d8baa-8533-4982-857f-2a0289facbf0" doc:name="Set attributes">
