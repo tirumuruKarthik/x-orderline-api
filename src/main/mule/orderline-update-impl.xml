@@ -7,11 +7,9 @@
 http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
 http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
 	<sub-flow name="put-orderline-update-impl-sub-flow" doc:id="c3ebeab3-4ed5-464a-8962-addd4421353e" >
-		<set-variable value="#['x-orderline-api']" doc:name="Set Api name" doc:id="9e889527-c942-40ae-b9b9-d50e61016e79" variableName="apiName"/>
 		<set-variable value="#[vars.apiName ++ &quot;:&quot; ++ 'put-orderline-update-impl-sub-flow']" doc:name="Set Flow Name" doc:id="f880e1ee-d436-4241-8f6b-d5756f20d95d" variableName="flowName"/>
 		<flow-ref doc:name="Log process entry" doc:id="500d585a-19bf-4c32-b111-96ea03a962f1" name="log-process-entry-sub-flow"/>
 		<flow-ref doc:name="Audit process entry" doc:id="3be411df-1af9-41a3-a80c-6c60d2513349" name="audit-process-entry-sub-flow"/>
-		<try doc:name="Try" doc:id="bd26b358-df6e-4b43-996f-26ed1c1370b4" >
 			<http:request method="PUT" doc:name="Invoke orderline process layer" doc:id="41630289-68cb-46bc-8af8-7d27bf3bc245" config-ref="p_order_mgmt_HTTP_Request_configuration" path="#[vars.processPath]" responseTimeout="${response.timeout}">
 			<http:headers><![CDATA[#[output application/java
 ---
@@ -24,32 +22,7 @@ http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/htt
 	"ERP-Account-Number" : vars.accountNumber
 }]]]></http:headers>
 			</http:request>
-			<error-handler>
-				<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="b9c05b7f-84ad-4968-909b-9b1c31643f00" type="ANY">
-					<set-variable value="#[error.errorMessage.attributes['statusCode']]" doc:name="Set Variable httpStatusCode" doc:id="bdc7ab54-daa9-48ad-ac41-cf7f9c7fbd6d" variableName="httpStatusCode" />
-					<set-variable value="#['errors.calm2.response.status.' ++ vars.httpStatusCode]" doc:name="Set Variable Error Msg" doc:id="28bdc9c6-06b9-47be-b2d4-28b5ac6bcdf9" variableName="errorMsg"/>
-					<set-variable value="#[p(vars.errorMsg)]" doc:name="Set Variable httpStatusMsg" doc:id="e89a34ec-2f7c-4f55-a44c-c81c1f280ac3" variableName="httpStatusMsg"/>
-					<ee:transform doc:name="Response Error Message" doc:id="13a1473e-4027-4a1e-a947-5971778d7644">
-			<ee:message>
-				<ee:set-payload><![CDATA[%dw 2.0
-output application/json
----
-{
-    "responseCode": vars.httpStatusCode,
-    "responseText":  vars.httpStatusMsg
-}
-]]></ee:set-payload>
-			</ee:message>
-							<ee:variables >
-								<ee:set-variable variableName="httpStatus" ><![CDATA[%dw 2.0
-output application/java
----
-vars.httpStatusCode]]></ee:set-variable>
-							</ee:variables>
-		</ee:transform>
-					</on-error-continue>
-			</error-handler>
-		</try>
+		<set-variable value="#[vars.apiName ++ &quot;:&quot; ++ 'put-orderline-update-impl-sub-flow']" doc:name="Set Flow Name" doc:id="23d8f3d2-b0b1-4e6b-b9f3-b22b634d5710" variableName="flowName"/>
 		<flow-ref doc:name="Audit process exit" doc:id="b2f77e14-1264-4506-95d6-8184f0a06df5" name="audit-process-exit-sub-flow"/>
 		<flow-ref doc:name="Log process exit" doc:id="4b7d9afe-23bc-4aa3-b29f-2c3e9d384743" name="log-process-exit-sub-flow" />
 	</sub-flow>
