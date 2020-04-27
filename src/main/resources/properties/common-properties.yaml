@@ -22,6 +22,6 @@ response:
 db:
  pool:
    size:
-     max: "35"
-     min: "13" 
+     max: "15"
+     min: "2" 
   
