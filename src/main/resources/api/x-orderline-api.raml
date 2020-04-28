@@ -5,8 +5,8 @@ version: v1
 
 uses:
   dataTypesLib: exchange_modules/600fe2e7-d5ea-4266-abb3-7fb67efb9c53/datatypeslibrary/1.0.0/datatypeslibrary.raml
-  resourceTypesLib: exchange_modules/600fe2e7-d5ea-4266-abb3-7fb67efb9c53/resourcetypeslibrary/1.0.0/resourcetypeslibrary.raml
-  traitsLib: exchange_modules/600fe2e7-d5ea-4266-abb3-7fb67efb9c53/traitslibrary/1.0.0/traitslibrary.raml
+  resourceTypesLib: exchange_modules/600fe2e7-d5ea-4266-abb3-7fb67efb9c53/resourcetypeslibrary/1.0.1/resourcetypeslibrary.raml
+  traitsLib: exchange_modules/600fe2e7-d5ea-4266-abb3-7fb67efb9c53/traitslibrary/1.0.1/traitslibrary.raml
   
 /erpOrderLines:
   description: |
@@ -23,6 +23,7 @@ uses:
       put:
         description: |
           Upsert orderline to target system. e.g CALM2
+        securedBy: [traitsLib.oauth_2_0]
         headers:
           ERP-Account-Number:
             type: string
@@ -72,4 +73,4 @@ uses:
             body:
               application/json:
                 example: |
-                      { "responseCode" : 0,  "responseText" : "success"}                      
+                      { "responseCode" : 0,  "responseText" : "success"}                

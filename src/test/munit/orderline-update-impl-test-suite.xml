@@ -23,6 +23,10 @@ http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/htt
 		</munit:behavior>
 		<munit:execution >
 			<set-payload value='#[MunitTools::getResourceAsString("request/orderline-update-success-request.json")]' doc:name="Set Payload" doc:id="2f96ae38-9870-482b-a4db-4ca3ac7402bb" />
+			<munit:set-event doc:name="Set Event" doc:id="877c5860-4903-4183-b905-f0586528ffaa" >
+				<munit:payload value='#[MunitTools::getResourceAsString("request/orderline-update-success-request.json")]' mediaType="application/json" />
+				<munit:attributes value="#[{uriParams : {'erpOrderId' :'123450','erpOrderLineId' :'8474845'}}]" />
+			</munit:set-event>
 			<flow-ref doc:name="Flow-ref to put-orderline-update-impl-sub-flow" doc:id="8f28f602-0b13-4ef3-9184-574749aa720b" name="put:\erpOrderLines\(erpOrderId)\(erpOrderLineId):application\json:x-orderline-api-config"/>
 		</munit:execution>
 		<munit:validation >

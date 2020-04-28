@@ -27,11 +27,6 @@ smtp:
   password: ""
   subject: "Aveva API Exception"
   
-sqs:
-  accessKey: "![iKDP0/LYfR1ghGUCOAayKYI5kMT/ieTr3IMibNfn9y8=]"
-  secretKey: "![z8W9r4EBG78ATEDLlzRgrDu8pSr3cf8u0RPGoG/mEyLZSeyc1prL/JqYzbF2CWUY]"
-  region: "![6lleIG6Qoif/fTA7pK+sUA==]"
-  
 processOrderMgmt:
   host: "mule-worker-internal-qa-p-order-mgmt-api.uk-e1.cloudhub.io"
   port: "8091"

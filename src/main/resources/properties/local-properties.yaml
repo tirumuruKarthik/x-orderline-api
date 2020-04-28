@@ -25,12 +25,7 @@ smtp:
   port: ""
   user: ""
   password: ""
-  subject: ""
-  
-sqs:
-  accessKey: "![iKDP0/LYfR1ghGUCOAayKYI5kMT/ieTr3IMibNfn9y8=]"
-  secretKey: "![z8W9r4EBG78ATEDLlzRgrDu8pSr3cf8u0RPGoG/mEyLZSeyc1prL/JqYzbF2CWUY]"
-  region: "![6lleIG6Qoif/fTA7pK+sUA==]"
+  subject: "Aveva API Exception"
   
 processOrderMgmt:
   host: "localhost"
